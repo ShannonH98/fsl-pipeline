@@ -15,12 +15,30 @@ This is a first-step pipeline showing **brain extraction** from a T1-weighted MR
 - - Stored in: `data/input.nii.gz`
 - Original source: [Nilearn ICBM152 dataset](https://nilearn.github.io)
 
-## Step 1: Brain Extraction (BET)
 
-### Command used
+## **Pipeline Overview**
+
+1. **Motion Correction** (`mcflirt.sh`)  
+   - Corrects for subject head motion over time in the fMRI data.  
+   - Input: `func.nii.gz`  
+   - Output: `func_mc.nii.gz`  
+
+2. **Coregistration** (`coregister.sh`)  
+   - Aligns functional MRI to structural T1 MRI.  
+   - Input: `func_mc.nii.gz` + `output_brain.nii.gz`  
+   - Output: `func_coreg.nii.gz` + `func_coreg.mat`  
+
+3. **Full Pipeline** (`fmri_preproc.sh`)  
+   - Runs motion correction and coregistration automatically.  
+
+---
+
+## **Setup Instructions**
+
+1. **Install dependencies**  
+   - FSL (https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FslInstallation)  
+   - Python 3 with `nibabel` and `nilearn` (optional for demo data)
+
 ```bash
-bet data/input.nii.gz data/output_brain.nii.gz -F
-ls data (to ensure it got dowloadded)
-fsleyes data/output_brain.nii.gz (open in fsl eyes)
-
+pip install nibabel nilearn
 
